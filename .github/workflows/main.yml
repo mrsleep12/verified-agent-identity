@@ -7,28 +7,29 @@ jobs:
   verify:
     runs-on: ubuntu-latest
 
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: '22'
+          node-version: "20"
 
-      - name: Install Bun
-        run: |
-          curl -fsSL https://bun.sh/install | bash
-          echo "$HOME/.bun/bin" >> $GITHUB_PATH
+      - name: Install ClawHub
+        run: npm install -g clawhub
+
+      - name: Install Verified Agent Identity
+        run: clawhub install verified-agent-identity
 
       - name: Install dependencies
-        run: bun install
+        run: |
+          cd scripts
+          npm install
 
       - name: Create Ethereum Identity
-        run: bun run create-identity
+        run: node scripts/createNewEthereumIdentity.js
 
       - name: Link Human to Agent
-        run: bun run link-agent
+        run: |
+          node scripts/manualLinkHumanToAgent.js --challenge '{"name":"one","description":"one AI Agent"}'
