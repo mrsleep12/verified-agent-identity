@@ -1,5 +1,4 @@
-    node scripts/manualLinkHumanToAgent.js --challenge '{"name": "one", "description": "one AI Agent"}'
-    name: Verify Human Identity
+name: Verify Human Identity
 
 on:
   workflow_dispatch:
